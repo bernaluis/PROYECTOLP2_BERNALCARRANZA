@@ -1,0 +1,10 @@
+$(document).ready(function(){
+	$('.sidenav').sidenav();
+	$(".dropdown-trigger").dropdown();
+	$('.slider').slider();
+	$('.parallax').parallax();
+	$('.tabs').tabs();
+	$('.modal').modal();
+	$('.collapsible').collapsible();
+	$('.js-example-basic-single').select2();
+});
