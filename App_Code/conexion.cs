@@ -53,7 +53,7 @@ public class conexion
         SqlCommand comando = new SqlCommand();
         SqlDataReader lector;
         comando.CommandType = System.Data.CommandType.Text;
-        comando.CommandText = "SELECT * FROM tipo_usuario order by tipo asc";
+        comando.CommandText = "SELECT * FROM tipo_usuario";
         comando.Connection = this.conexionSQL;
         try
         {
@@ -104,10 +104,12 @@ public class conexion
         SqlCommand comando = new SqlCommand();
         SqlDataReader lector;
         comando.CommandType = System.Data.CommandType.Text;
-        comando.CommandText = "SELECT ciclo.* from ciclo order by nombre asc";
+        comando.CommandText = "SELECT ciclo.* from ciclo WHERE nombre LIKE @anio order by nombre asc";
         comando.Connection = this.conexionSQL;
         try
         {
+            String anio = "%" + DateTime.Now.ToString("yyyy") + "%";
+            comando.Parameters.AddWithValue("@anio",anio);
             combobox.Items.Clear();
             lector = comando.ExecuteReader();
             if (lector.HasRows)
@@ -442,6 +444,52 @@ public class conexion
         catch (SqlException e)
         {
 
+        }
+    }
+    public void readUsuario(int id,ref TextBox nomb,ref TextBox apell,ref DropDownList combo)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT usuario.nombres,usuario.apellidos,usuario.id_tipo FROM usuario inner join tipo_usuario ON usuario.id_tipo=tipo_usuario.id WHERE usuario.id=@id";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@id", id);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    nomb.Text = lector.GetString(0);
+                    apell.Text = lector.GetString(1);
+                    combo.SelectedIndex = lector.GetInt32(2)-1;
+                }
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+        }
+    }
+    public int modificarUsuario(int id, String nomb, String apel, int combo)
+    {
+        String queryUpdate = "UPDATE usuario SET nombres=@nomb, apellidos=@apel, id_tipo=@tipo WHERE id=@id";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryUpdate;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@nomb", nomb);
+            comando.Parameters.AddWithValue("@apel", apel);
+            comando.Parameters.AddWithValue("@tipo", combo);
+            comando.Parameters.AddWithValue("@id", id);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
         }
     }
 }

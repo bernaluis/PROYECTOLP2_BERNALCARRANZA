@@ -35,12 +35,13 @@
                         </div>
                         <div class="input-field col s12 m6">
                             <asp:DropDownList CssClass="browser-default" ID="ddlEstaTerc" runat="server">
-                                <asp:ListItem Value="" Text="Seleccione una opcion"></asp:ListItem>
-                                <asp:ListItem Value="0" Text="No"></asp:ListItem>
+                                <asp:ListItem Value="" disabled Selected Text="Quedaste en el tercio superior?"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="Si"></asp:ListItem>
+                                <asp:ListItem Value="0" Text="No"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
                         <div class="input-field col s12 m6">
+                            
                             <asp:DropDownList CssClass="browser-default" ID="ddlCiclo" runat="server"></asp:DropDownList>
                         </div>
                         <div class="col s12 m12 center-align">

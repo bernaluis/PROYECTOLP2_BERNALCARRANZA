@@ -29,12 +29,9 @@ public partial class dashboard_administrador_Usuarios : System.Web.UI.Page
         GridView1.DataBind();
         ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "eliminarCarrera();", true);
     }
-    protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    protected void GridView1_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
     {
-       
-    }
-    protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
+        int id = Convert.ToInt32(GridView1.DataKeys[e.NewSelectedIndex].Value);
+        Response.Redirect(string.Format("ModificarUsuario.aspx?id={0}",id));
     }
 }
