@@ -21,10 +21,10 @@ public partial class Default2 : System.Web.UI.Page
                         Response.Redirect("administrador/MenuAdmin.aspx");
                         break;
                     case "2":
-                        Response.Redirect("contador/MenuContador.aspx");
+                        Response.Redirect("gestor/MenuGestorEducativo.aspx");
                         break;
                     case "3":
-                        Response.Redirect("gestor/MenuGestorEducativo.aspx");
+                        Response.Redirect("contador/MenuContador.aspx");
                         break;
                 }
             }
@@ -52,12 +52,12 @@ public partial class Default2 : System.Web.UI.Page
                 case 2:
                     Session["codigoUsuario"] = conexionSQL.idUsuario;
                     Session["tipoUsuario"] = resp;
-                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "CorrectoContador();", true);
+                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "CorrectoGestor();", true);
                     break;
                 case 3:
                     Session["codigoUsuario"] = conexionSQL.idUsuario;
                     Session["tipoUsuario"] = resp;
-                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "CorrectoGestor();", true);
+                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "CorrectoContador();", true);
                     break;
             }
         }
