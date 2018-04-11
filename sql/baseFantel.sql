@@ -100,4 +100,3 @@ insert into tipo_usuario (tipo) VALUES ('Contador')
 insert into usuario (nombres,apellidos,correo,contra,id_tipo) values('Fernando Ernesto', 'Carranza Guardado', 'mkfzzhatb@emltmp.com','uheKfqK33VZchpArOozrthK0Fv8=',1)
 insert into usuario (nombres,apellidos,correo,contra,id_tipo) values('Fernando Ernesto', 'Carranza Guardado', 'rstgcfog@10mail.org','5RA+dNGELR25iGLcyKApo5IPi7I=',3)
 insert into usuario (nombres,apellidos,correo,contra,id_tipo) values('Fernando Ernesto', 'Carranza Guardado', 'rpkgarfdzoie@dropmail.me','lMAIpQa1ezZwNKSDtNmY74P53nA=',2)
-select * from usuario

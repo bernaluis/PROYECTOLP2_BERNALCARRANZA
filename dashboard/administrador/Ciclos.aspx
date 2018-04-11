@@ -83,7 +83,7 @@
                                 <div class="container">
                                     <asp:GridView CssClass="highlight" ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource2" DataKeyNames="id" OnRowUpdating="GridView1_RowUpdating">
                                         <Columns>
-                                            <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="True"></asp:BoundField>
+                                            <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="True" Visible="False"></asp:BoundField>
                                             <asp:BoundField DataField="nombre" HeaderText="Ciclo" SortExpression="nombre" />
                                             <asp:CommandField ButtonType="Button" HeaderText="Editar" ShowEditButton="True">
                                             <ControlStyle CssClass="btn blue white-text" />

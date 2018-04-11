@@ -109,7 +109,7 @@ public class conexion
         try
         {
             String anio = "%" + DateTime.Now.ToString("yyyy") + "%";
-            comando.Parameters.AddWithValue("@anio",anio);
+            comando.Parameters.AddWithValue("@anio", anio);
             combobox.Items.Clear();
             lector = comando.ExecuteReader();
             if (lector.HasRows)
@@ -128,7 +128,7 @@ public class conexion
     }
     public int agregarMateria(Object codigoBecario, String nombreM, double notaM, int estadoT, int idCiclo)
     {
-        String queryInsert = "INSERT INTO notas(id,id_becario,nombre_materia,nota_materia,estado_tercioS,id_ciclo) VALUES ((select top 1 (id+1) as ultiId from notas order by id desc),(select id from becario where codigo=@codiBeca),@nombMate,@notaMate,@estaTerc,@codiCicl)";
+        String queryInsert = "INSERT INTO notas(id_becario,nombre_materia,nota_materia,estado_tercioS,id_ciclo) VALUES ((select id from becario where codigo=@codiBeca),@nombMate,@notaMate,@estaTerc,@codiCicl)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -209,7 +209,7 @@ public class conexion
     //Programa de Beca
     public int agregarProgramaBeca(String codi, String nomb, String descr)
     {
-        String queryInsert = "INSERT INTO programa_beca(id,codigo,nombre,descripcion) VALUES ((select top 1 (id+1) as ultiId from programa_beca order by id desc),@codi,@nomb,@descr)";
+        String queryInsert = "INSERT INTO programa_beca(codigo,nombre,descripcion) VALUES (@codi,@nomb,@descr)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -230,7 +230,7 @@ public class conexion
     //Carrera
     public int agregarCarrera(String nomb)
     {
-        String queryInsert = "INSERT INTO carrera(id,nombre,estado) VALUES ((select top 1 (id+1) as ultiId from carrera order by id desc),@nomb,1)";
+        String queryInsert = "INSERT INTO carrera(nombre,estado) VALUES (@nomb,1)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -248,7 +248,7 @@ public class conexion
     //Universidad
     public int agregarUniversidad(String nomb)
     {
-        String queryInsert = "INSERT INTO universidad(id,nombre,estado) VALUES ((select top 1 (id+1) as ultiId from universidad order by id desc),@nomb,1)";
+        String queryInsert = "INSERT INTO universidad(nombre,estado) VALUES (@nomb,1)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -266,7 +266,7 @@ public class conexion
     //Nivel Educativo
     public int agregarNivelEducativo(String nomb)
     {
-        String queryInsert = "INSERT INTO nivel_educativo(id,nivel,estado) VALUES ((select top 1 (id+1) as ultiId from nivel_educativo order by id desc),@nomb,1)";
+        String queryInsert = "INSERT INTO nivel_educativo(nivel,estado) VALUES (@nomb,1)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -284,7 +284,7 @@ public class conexion
     //Ciclo
     public int agregarCiclo(String nomb)
     {
-        String queryInsert = "INSERT INTO ciclo(id,nombre) VALUES ((select top 1 (id+1) as ultiId from ciclo order by id desc),@nomb)";
+        String queryInsert = "INSERT INTO ciclo(nombre) VALUES (@nomb)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -302,7 +302,7 @@ public class conexion
     //Aspecto Presupuesto
     public int agregarAspecto(String nomb)
     {
-        String queryInsert = "INSERT INTO aspecto(id,nombre) VALUES ((select top 1 (id+1) as ultiId from aspecto order by id desc),@nomb)";
+        String queryInsert = "INSERT INTO aspecto(nombre) VALUES (@nomb)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -320,7 +320,7 @@ public class conexion
     //Usuario
     public int agregarUsuario(String nombre, String apellido, String correo, String contra, int tipo)
     {
-        String queryInsert = "INSERT INTO usuario(id,nombres,apellidos,correo,contra,id_tipo) VALUES ((select top 1 (id+1) as ultiId from usuario order by id desc),@nombre,@apellido,@correo,@contra,@tipo)";
+        String queryInsert = "INSERT INTO usuario(nombres,apellidos,correo,contra,id_tipo) VALUES (@nombre,@apellido,@correo,@contra,@tipo)";
         SqlCommand comando = new SqlCommand();
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = queryInsert;
@@ -345,7 +345,7 @@ public class conexion
         SqlCommand comando = new SqlCommand();
         SqlDataReader lector;
         comando.CommandType = System.Data.CommandType.Text;
-        comando.CommandText = "SELECT id, codigo from programa_beca order by id";
+        comando.CommandText = "SELECT id, codigo from programa_beca ORDER BY id asc";
         comando.Connection = this.conexionSQL;
         try
         {
@@ -371,7 +371,7 @@ public class conexion
         SqlCommand comando = new SqlCommand();
         SqlDataReader lector;
         comando.CommandType = System.Data.CommandType.Text;
-        comando.CommandText = "SELECT id, nombre from universidad order by id";
+        comando.CommandText = "SELECT id, nombre from universidad ORDER BY id asc";
         comando.Connection = this.conexionSQL;
         try
         {
@@ -397,7 +397,7 @@ public class conexion
         SqlCommand comando = new SqlCommand();
         SqlDataReader lector;
         comando.CommandType = System.Data.CommandType.Text;
-        comando.CommandText = "SELECT id, nombre from carrera where estado=1 order by id";
+        comando.CommandText = "SELECT id, nombre from carrera where estado=1 ORDER BY id asc";
         comando.Connection = this.conexionSQL;
         try
         {
@@ -424,7 +424,7 @@ public class conexion
         comando.CommandType = System.Data.CommandType.Text;
         comando.CommandText = "SELECT b.id, b.codigo FROM becario as b,programa_beca as pb, universidad as u, carrera as c WHERE b.id_programaBeca= pb.id AND b.id_universidad= u.id AND b.id_carrera=c.id AND b.id_carrera=@car AND b.id_programaBeca=@pro AND b.id_universidad=@uni AND b.estado=@est";
         comando.Connection = this.conexionSQL;
-        try 
+        try
         {
             comando.Parameters.AddWithValue("@pro", programa);
             comando.Parameters.AddWithValue("@uni", universidad);
@@ -432,7 +432,7 @@ public class conexion
             comando.Parameters.AddWithValue("@est", estado);
             combo.Items.Clear();
             lector = comando.ExecuteReader();
-            if(lector.HasRows)
+            if (lector.HasRows)
             {
                 while (lector.Read())
                 {
@@ -446,7 +446,7 @@ public class conexion
 
         }
     }
-    public void readUsuario(int id,ref TextBox nomb,ref TextBox apell,ref DropDownList combo)
+    public void readUsuario(int id, ref TextBox nomb, ref TextBox apell, ref DropDownList combo)
     {
         SqlCommand comando = new SqlCommand();
         SqlDataReader lector;
@@ -463,7 +463,7 @@ public class conexion
                 {
                     nomb.Text = lector.GetString(0);
                     apell.Text = lector.GetString(1);
-                    combo.SelectedIndex = lector.GetInt32(2)-1;
+                    combo.SelectedIndex = lector.GetInt32(2) - 1;
                 }
                 lector.Close();
             }
@@ -488,6 +488,289 @@ public class conexion
             return comando.ExecuteNonQuery();
         }
         catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int verificarExistenciaPresupuestoBecario(String codi)
+    {
+        int res=0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT COUNT(*) as conteo FROM presupuesto_maestro WHERE id_becario = (SELECT id from becario where codigo = @codi)";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codi", codi);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    res = lector.GetInt32(0);
+                }
+                lector.Close();
+            }
+            return res;
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int agregarPresupuestoBecario(String codi)
+    {
+        String queryUpdate = "insert into presupuesto_maestro(id_becario) VALUES((SELECT id from becario where codigo = @codi))";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryUpdate;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codi", codi);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int agregarAspectoPresupuestoBecario(String codi, int aspe, double mont)
+    {
+        String queryUpdate = "insert into presupuesto_detalle(id_maestro,id_aspecto,monto) VALUES ((SELECT TOP 1 id from presupuesto_maestro WHERE id_becario=(SELECT id from becario where codigo = @codi) ORDER BY id desc),@aspe,@mont)";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryUpdate;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codi", codi);
+            comando.Parameters.AddWithValue("@aspe", aspe);
+            comando.Parameters.AddWithValue("@mont", mont);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int verificarAspectoPresupuestoBecario(String codi, int aspe)
+    {
+        int res = 0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT COUNT(*) AS conteo FROM ((presupuesto_detalle AS pd INNER JOIN presupuesto_maestro AS pm ON pd.id_maestro=pm.id)INNER JOIN becario AS b ON pm.id_becario= b.id) WHERE b.codigo=@codi AND pd.id_aspecto=@aspe";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codi", codi);
+            comando.Parameters.AddWithValue("@aspe", aspe);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    res = lector.GetInt32(0);
+                }
+                lector.Close();
+            }
+            return res;
+        }
+        catch (SqlException ex)
+        {
+            return 0;
+        }
+    }
+    public int verificarExistenciaBecario(String codi)
+    {
+        int res = 0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT COUNT(*) AS conteo FROM becario WHERE codigo=@codi";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codi", codi);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    res = lector.GetInt32(0);
+                }
+                lector.Close();
+            }
+            return res;
+        }
+        catch (SqlException ex)
+        {
+            return 0;
+        }
+    }
+    //Carreras Todos
+    public void getAspectosAll(ref DropDownList combobox)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT id, nombre from aspecto ORDER BY id asc";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            combobox.Items.Clear();
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    combobox.Items.Add(new ListItem(lector.GetString(1), lector.GetInt32(0).ToString()));
+                }
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+
+        }
+    }
+    public void getAspectosBecario(ref DropDownList combobox, String codi)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT DISTINCT pd.id,a.nombre FROM ((((desembolso as d FULL OUTER JOIN presupuesto_detalle AS pd ON d.id_presupuestoD=pd.id)INNER JOIN aspecto AS a ON pd.id_aspecto=a.id)INNER JOIN presupuesto_maestro AS pm ON pd.id_maestro=pm.id)INNER JOIN becario AS b ON pm.id_becario=b.id) WHERE b.codigo=@codi";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codi", codi);
+            combobox.Items.Clear();
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    combobox.Items.Add(new ListItem(lector.GetString(1), lector.GetInt32(0).ToString()));
+                }
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+
+        }
+    }
+    public int verificarMontoIngresado(int aspe, double mont)
+    {
+        int res = 0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT DISTINCT ((pd.monto - (SELECT SUM(desembolso.monto) FROM desembolso WHERE desembolso.id_presupuestoD=@aspe))-@mont) as monto FROM desembolso AS d FULL OUTER JOIN presupuesto_detalle AS pd ON d.id_presupuestoD=pd.id WHERE pd.id=@aspe GROUP BY pd.monto, d.monto";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@mont", mont);
+            comando.Parameters.AddWithValue("@aspe", aspe);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                double valor=0;
+                while (lector.Read())
+                {
+                    valor = lector.GetDouble(0);
+                }
+                if (valor >= 0)
+                {
+                    res = 1;
+                }
+                lector.Close();
+            }
+            return res;
+        }
+        catch (SqlException ex)
+        {
+            return 0;
+        }
+    }
+    public int agregarDesembolso(int aspe, double mont)
+    {
+        String queryUpdate = "insert into desembolso(id_presupuestoD,monto,fecha) VALUES (@pd,@mont,@fech)";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryUpdate;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@pd", aspe);
+            comando.Parameters.AddWithValue("@mont", mont);
+            comando.Parameters.AddWithValue("@fech", DateTime.Now.ToString("yyyy-MM-dd"));
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int verificarMontoIngresadoNUll(int aspe, double mont)
+    {
+        int res = 0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT DISTINCT (pd.monto-@mont) as monto FROM desembolso AS d FULL OUTER JOIN presupuesto_detalle AS pd ON d.id_presupuestoD=pd.id WHERE pd.id=@aspe GROUP BY pd.monto, d.monto";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@mont", mont);
+            comando.Parameters.AddWithValue("@aspe", aspe);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                double valor = 0;
+                while (lector.Read())
+                {
+                    valor = lector.GetDouble(0);
+                }
+                if (valor >= 0)
+                {
+                    res = 1;
+                }
+                lector.Close();
+            }
+            return res;
+        }
+        catch (SqlException ex)
+        {
+            return 0;
+        }
+    }
+
+    public int verificarExistenciaMonto(int aspe)
+    {
+        int res = 0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT COUNT(monto) FROM desembolso WHERE id_presupuestoD = @aspe";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@aspe", aspe);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    res = lector.GetInt32(0);
+                }
+                lector.Close();
+            }
+            return res;
+        }
+        catch (SqlException ex)
         {
             return 0;
         }

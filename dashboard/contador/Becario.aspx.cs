@@ -13,15 +13,21 @@ public partial class dashboard_contador_Becario : System.Web.UI.Page
         conexionSQL.conectar();
         if (!Page.IsPostBack)
         {
-            conexionSQL.getProgramasAll(ref ddlProgramasBecas);
-            conexionSQL.getUniversidadesAll(ref ddlUniversidad);
-            conexionSQL.getCarrerasAll(ref ddlCarrera);
-            int programa = int.Parse(ddlProgramasBecas.SelectedValue);
-            int universidad = int.Parse(ddlUniversidad.SelectedValue);
-            int carrera = int.Parse(ddlCarrera.SelectedValue);
-            int estado = int.Parse(ddlEstado.SelectedValue);
-            conexionSQL.getAlumnosContador(ref ddlAlumnos, programa, universidad, carrera, estado);
-            conexionSQL.desconectar();
+            try
+            {
+                conexionSQL.getProgramasAll(ref ddlProgramasBecas);
+                conexionSQL.getUniversidadesAll(ref ddlUniversidad);
+                conexionSQL.getCarrerasAll(ref ddlCarrera);
+                int programa = int.Parse(ddlProgramasBecas.SelectedValue);
+                int universidad = int.Parse(ddlUniversidad.SelectedValue);
+                int carrera = int.Parse(ddlCarrera.SelectedValue);
+                int estado = int.Parse(ddlEstado.SelectedValue);
+                conexionSQL.getAlumnosContador(ref ddlAlumnos, programa, universidad, carrera, estado);
+                conexionSQL.desconectar();
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
     protected void btnBuscarAlumnos_Click(object sender, EventArgs e)
