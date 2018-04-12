@@ -33,7 +33,7 @@
                     <div class="container">
                         <div class="input-field col s12 m12">
                             <label>Nombre de ciclo:</label>
-                            <asp:TextBox ID="txtNombCicl" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="txtNombCicl" runat="server" MaxLength="6"></asp:TextBox>
                         </div>
                         <div class="col s12 m12 center-align">
                             <asp:Button ID="guardarCiclo" CssClass="btn blue white-text" runat="server" Text="Guardar" OnClick="guardarCiclo_Click" />
