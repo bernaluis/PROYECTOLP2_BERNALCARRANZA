@@ -24,13 +24,20 @@ public partial class dashboard_administrador_AgregarProgramaBeca : System.Web.UI
                 {
                     conexion conexionSQL = new conexion();
                     conexionSQL.conectar();
-                    int resp = conexionSQL.agregarProgramaBeca(codi,nomb,descr);
-                    conexionSQL.desconectar();
-                    if (resp > 0)
+                    try
                     {
-                        ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                        int resp = conexionSQL.agregarProgramaBeca(codi, nomb, descr);
+                        conexionSQL.desconectar();
+                        if (resp > 0)
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
                         ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
                     }

@@ -19,36 +19,43 @@ public partial class dashboard_administrador_AgregarUsuario : System.Web.UI.Page
     }
     protected void guardarUsuario_Click(object sender, EventArgs e)
     {
-        String nombre = txtNombUsu.Text;
-        String apellido = txtApelUsu.Text;
-        String correo = txtCorreUsu.Text;
-        int tipo = int.Parse(ddlTipoUsu.SelectedValue);
-        if (nombre != "")
+        try
         {
-            if (apellido != "")
+            String nombre = txtNombUsu.Text;
+            String apellido = txtApelUsu.Text;
+            String correo = txtCorreUsu.Text;
+            int tipo = int.Parse(ddlTipoUsu.SelectedValue);
+            if (nombre != "")
             {
-                if (correo != "")
+                if (apellido != "")
                 {
-                    if (tipo > 0)
+                    if (correo != "")
                     {
-                        conexion conexionSQL = new conexion();
-                        conexionSQL.conectar();
-                        generadorContra c = new generadorContra();
-                        String contra = c.generarContra();
-                        encriptacion enc = new encriptacion();
-                        String contraEnc = enc.encriptarContra(contra);
-                        int resp = conexionSQL.agregarUsuario(nombre, apellido, correo, contraEnc, tipo);
-                        conexionSQL.desconectar();
-                        if (resp > 0)
+                        if (tipo > 0)
                         {
-                            correo enviarCo = new correo(correo,"Credeciales de Usuario","Estimado/a: "+ nombre +". Su password es: "+contra);
-                            if (enviarCo.Estado)
+                            conexion conexionSQL = new conexion();
+                            conexionSQL.conectar();
+                            generadorContra c = new generadorContra();
+                            String contra = c.generarContra();
+                            encriptacion enc = new encriptacion();
+                            String contraEnc = enc.encriptarContra(contra);
+                            int resp = conexionSQL.agregarUsuario(nombre, apellido, correo, contraEnc, tipo);
+                            conexionSQL.desconectar();
+                            if (resp > 0)
                             {
-                                ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                                correo enviarCo = new correo(correo, "Credeciales de Usuario", "Estimado/a: " + nombre + ". Su password es: " + contra);
+                                if (enviarCo.Estado)
+                                {
+                                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                                }
+                                else
+                                {
+                                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                                }
                             }
                             else
                             {
-                                ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                                ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
                             }
                         }
                         else
@@ -71,7 +78,7 @@ public partial class dashboard_administrador_AgregarUsuario : System.Web.UI.Page
                 ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
             }
         }
-        else
+        catch (Exception ex)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
         }

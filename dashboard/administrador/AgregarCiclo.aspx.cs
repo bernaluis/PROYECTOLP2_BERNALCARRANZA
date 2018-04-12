@@ -18,13 +18,20 @@ public partial class dashboard_administrador_AgregarCiclo : System.Web.UI.Page
         {
             conexion conexionSQL = new conexion();
             conexionSQL.conectar();
-            int resp = conexionSQL.agregarCiclo(nombre);
-            conexionSQL.desconectar();
-            if (resp > 0)
+            try
             {
-                ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                int resp = conexionSQL.agregarCiclo(nombre);
+                conexionSQL.desconectar();
+                if (resp > 0)
+                {
+                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "modificarCarrera();", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
             }

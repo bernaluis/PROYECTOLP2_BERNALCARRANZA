@@ -19,15 +19,30 @@ public partial class dashboard_administrador_Usuarios : System.Web.UI.Page
     }
     protected void Button1_Click(object sender, EventArgs e)
     {
-        GridView1.DataBind();
+        try
+        {
+
+            GridView1.DataBind();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
+        }
     }
     protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        SqlDataSource1.DeleteCommand = "DELETE FROM usuario WHERE id=@codi";
-        SqlDataSource1.DeleteParameters.Add("codi", GridView1.DataKeys[e.RowIndex].Values["id"].ToString());
-        SqlDataSource1.Delete();
-        GridView1.DataBind();
-        ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "eliminarCarrera();", true);
+        try
+        {
+            SqlDataSource1.DeleteCommand = "DELETE FROM usuario WHERE id=@codi";
+            SqlDataSource1.DeleteParameters.Add("codi", GridView1.DataKeys[e.RowIndex].Values["id"].ToString());
+            SqlDataSource1.Delete();
+            GridView1.DataBind();
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "eliminarCarrera();", true);
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Popup", "error();", true);
+        }
     }
     protected void GridView1_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
     {
