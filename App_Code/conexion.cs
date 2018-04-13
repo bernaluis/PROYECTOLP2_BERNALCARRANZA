@@ -775,4 +775,298 @@ public class conexion
             return 0;
         }
     }
+    public void readIncidente(int id, ref TextBox nomb, ref DropDownList ddlencargados, ref DropDownList ddlbecario)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT * from incidentes WHERE id=@id";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@id", id);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    nomb.Text = lector.GetString(1);
+                    ddlencargados.SelectedIndex = lector.GetInt32(3);
+                    ddlbecario.SelectedIndex = lector.GetInt32(2);
+                }
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+        }
+    }
+    public int modificarIncidente(int id, String descr, int codib, int codie, String fecha)
+    {
+        String queryInsert = "update incidentes set detalle=@detalle ,id_becario=@becario,id_usuario=@usuario,fecha=@fecha where id=@id)";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryInsert;
+        comando.Connection = this.conexionSQL;
+
+        try
+        {
+
+            comando.Parameters.AddWithValue("@detalle", descr);
+            comando.Parameters.AddWithValue("@becario", codib);
+            comando.Parameters.AddWithValue("@usuario", codie);
+            comando.Parameters.AddWithValue("@fecha", fecha);
+            comando.Parameters.AddWithValue("@id", id);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public void getDatosComboB(ref DropDownList combobox, String sql)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = sql;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            combobox.Items.Clear();
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    combobox.Items.Add(new ListItem(lector.GetString(1), lector.GetInt32(0).ToString()));
+                }
+                lector.Close();
+            }
+            else
+            {
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+
+        }
+    }
+    public void getProgramas(ref DropDownList combobox)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "select * from programa_beca";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            combobox.Items.Clear();
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    combobox.Items.Add(new ListItem(lector.GetString(2), lector.GetInt32(0).ToString()));
+                }
+                lector.Close();
+            }
+            else
+            {
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+
+        }
+    }
+    public String getCodigoB(int codigo)
+    {
+        String cod = "";
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "select * from programa_beca where id=@codigo";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codigo", codigo);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    cod = lector.GetString(1);
+                }
+                lector.Close();
+
+            }
+            else
+            {
+                lector.Close();
+            }
+            return cod;
+        }
+        catch (SqlException e)
+        {
+            return cod;
+        }
+    }
+    public int codigoMax()
+    {
+        int cod = 0;
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "select max(id) as maximo from becario";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    cod = lector.GetInt32(0);
+                }
+                lector.Close();
+
+
+
+            }
+            else
+            {
+                lector.Close();
+            }
+            return cod;
+        }
+        catch (SqlException e)
+        {
+            return cod;
+        }
+    }
+    public int agregarBecario(String nombre, String apellido, String correo, String contra, int univer, int nivel, int carrera, int beca, String fecha, String inicio, String fin, String tel, String direccion, String codigo, String dui, String duracion)
+    {
+        String queryInsert = "INSERT INTO [dbo].[becario](codigo,nombres,apellidos,dui,fecha_nacimiento,direccion,telefono,correo,contra,id_programaBeca,id_universidad,id_carrera,id_nivelEducativo,duracion_programa,fecha_inicio,fecha_final,estado)VALUES(@codigo,@nombre,@apellido,@dui,@fecha,@direccion,@telefono,@correo,@contra,@progra,@univ,@carr,@nivel,@dur,@inicio,@fin,1)";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryInsert;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@codigo", codigo);
+            comando.Parameters.AddWithValue("@nombre", nombre);
+            comando.Parameters.AddWithValue("@apellido", apellido);
+            comando.Parameters.AddWithValue("@dui", dui);
+            comando.Parameters.AddWithValue("@fecha", fecha);
+            comando.Parameters.AddWithValue("@direccion", direccion);
+            comando.Parameters.AddWithValue("@telefono", tel);
+            comando.Parameters.AddWithValue("@correo", correo);
+            comando.Parameters.AddWithValue("@contra", contra);
+            comando.Parameters.AddWithValue("@progra", beca);
+            comando.Parameters.AddWithValue("@univ", univer);
+            comando.Parameters.AddWithValue("@carr", carrera);
+            comando.Parameters.AddWithValue("@nivel", nivel);
+            comando.Parameters.AddWithValue("@dur", duracion);
+            comando.Parameters.AddWithValue("@inicio", inicio);
+            comando.Parameters.AddWithValue("@fin", fin);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int update(int codi, String nombre, String apellido, String correo, int univer, int nivel, int carrera, int beca, String fecha, String inicio, String fin, String tel, String direccion, String dui, String duracion)
+    {
+        String queryInsert = "update becario set nombres=nombre,apellidos=@apellido,dui=@dui,fecha_nacimiento=@fecha,direccion=@direccion,telefono=@telefono,correo=@correo,id_programaBeca=@progra,id_universidad=@univ,id_carrera=@carr,id_nivelEducativo=@nivel,duracion_programa=@dur,fecha_inicio=@inicio,fecha_final=@fin where id=@id";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryInsert;
+        comando.Connection = this.conexionSQL;
+        try
+        {
+
+            comando.Parameters.AddWithValue("@nombre", nombre);
+            comando.Parameters.AddWithValue("@apellido", apellido);
+            comando.Parameters.AddWithValue("@dui", dui);
+            comando.Parameters.AddWithValue("@fecha", fecha);
+            comando.Parameters.AddWithValue("@direccion", direccion);
+            comando.Parameters.AddWithValue("@telefono", tel);
+            comando.Parameters.AddWithValue("@correo", correo);
+            comando.Parameters.AddWithValue("@progra", beca);
+            comando.Parameters.AddWithValue("@univ", univer);
+            comando.Parameters.AddWithValue("@carr", carrera);
+            comando.Parameters.AddWithValue("@nivel", nivel);
+            comando.Parameters.AddWithValue("@dur", duracion);
+            comando.Parameters.AddWithValue("@inicio", inicio);
+            comando.Parameters.AddWithValue("@fin", fin);
+            comando.Parameters.AddWithValue("@id", codi);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public int agregarIncidente(String descr, int codib, int codie, String fecha)
+    {
+        String queryInsert = "insert into incidentes values(@detalle,@becario,@usuario,@fecha)";
+        SqlCommand comando = new SqlCommand();
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = queryInsert;
+        comando.Connection = this.conexionSQL;
+
+        try
+        {
+
+            comando.Parameters.AddWithValue("@detalle", descr);
+            comando.Parameters.AddWithValue("@becario", codib);
+            comando.Parameters.AddWithValue("@usuario", codie);
+            comando.Parameters.AddWithValue("@fecha", fecha);
+            return comando.ExecuteNonQuery();
+        }
+        catch (SqlException e)
+        {
+            return 0;
+        }
+    }
+    public void readBecario(int id, ref TextBox nomb, ref TextBox apell, ref TextBox dura, ref TextBox correo, ref TextBox dui, ref TextBox dir, ref TextBox tel, ref TextBox fechan, ref TextBox fechai, ref TextBox fechaf, ref DropDownList ddlencargados, ref DropDownList ddlbecario, ref DropDownList ddlnivel, ref DropDownList ddlprograma)
+    {
+        SqlCommand comando = new SqlCommand();
+        SqlDataReader lector;
+        comando.CommandType = System.Data.CommandType.Text;
+        comando.CommandText = "SELECT * from becario WHERE id=@id";
+        comando.Connection = this.conexionSQL;
+        try
+        {
+            comando.Parameters.AddWithValue("@id", id);
+            lector = comando.ExecuteReader();
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    nomb.Text = lector.GetString(2);
+                    apell.Text = lector.GetString(3);
+                    dui.Text = lector.GetString(4);
+                    dir.Text = lector.GetString(6);
+                    tel.Text = lector.GetString(7);
+                    correo.Text = lector.GetString(8);
+                    ddlprograma.SelectedIndex = lector.GetInt32(10);
+                    ddlencargados.SelectedIndex = lector.GetInt32(11);
+                    ddlbecario.SelectedIndex = lector.GetInt32(12);
+                    ddlnivel.SelectedIndex = lector.GetInt32(13);
+                    dura.Text = lector.GetString(14);
+
+
+                }
+                lector.Close();
+            }
+        }
+        catch (SqlException e)
+        {
+        }
+    }
 }
