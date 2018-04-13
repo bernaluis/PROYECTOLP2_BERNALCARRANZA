@@ -27,7 +27,7 @@
                         <li><a href="Becarios.aspx">Becarios</a></li>
                         <li><a href="BitacoraEstudiante.aspx">Registro de incidentes</a></li>
                         <li><a href="PresupuestoBecario.aspx">Presupuesto becario</a></li>
-                        <li><a href="NotasBecario.aspx">Notas becario</a></li>
+                        
                         <li><a href="../DestruirSessionUsuario.aspx">Cerrar Sesion</a></li>
                     </ul>
                 </div>
@@ -41,7 +41,7 @@
                 <li><a href="Becarios.aspx">Becarios</a></li>
                 <li><a href="BitacoraEstudiante.aspx">Registro de incidentes</a></li>
                 <li><a href="PresupuestoBecario.aspx">Presupuesto becario</a></li>
-                <li><a href="NotasBecario.aspx">Notas becario</a></li>
+                
                 <li><a href="../DestruirSessionUsuario.aspx">Cerrar Sesion</a></li>
             </ul>
             <br />
